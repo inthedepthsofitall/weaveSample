@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2016",                       // The JavaScript language version
+    "module": "commonjs",                     // Module system to use
+    "strict": true,                           // Enable all strict type-checking options
+    "esModuleInterop": true,                  // For compatibility with CommonJS modules
+    "skipLibCheck": true,                     // Skip type checking for .d.ts files
+    "forceConsistentCasingInFileNames": true, // Ensure consistent import casing
+
+    // Path settings to help with imports within 'src'
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["*"]
+    }
+  },
+  "include": ["src"]
+}
