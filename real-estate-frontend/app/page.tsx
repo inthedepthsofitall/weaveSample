@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import createClient from '../../src/config/weaviateClient'; // Ensure this path matches your structure
-import { WeaviateResponse } from '../../src/types/weaviateTypes';
 
 type RealEstate = {
   price: number;
@@ -16,22 +14,9 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const client = await createClient();
-
-        // Fetch the data and log the response structure
-        const response = await client.collections.get("RealEstate");
-        console.log('RealEstate collection response:', response); // Log to inspect structure
-
-        // Assuming response has an "objects" array, adjust this based on console output
-        const objects = (response as unknown as WeaviateResponse).objects || [];
-
-        const formattedData: RealEstate[] = objects.map((item) => ({
-          price: item.properties.price,
-          zip_code: item.properties.zip_code,
-          bedrooms: item.properties.bedrooms,
-        }));
-
-        setRealEstateData(formattedData);
+        const response = await fetch('/api/weaviateData');
+        const data = await response.json();
+        setRealEstateData(data.objects || []);
       } catch (error) {
         console.error('Failed to fetch real estate data:', error);
       }

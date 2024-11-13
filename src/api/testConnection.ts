@@ -1,4 +1,4 @@
-import createClient from '../config/weaviateClient';
+import createClient from '../../real-estate-frontend/app/config/weaviateClient';
 import realEstateSchema from '../schemas/realEstateSchema';
 
 async function testConnection() {
