@@ -6,10 +6,13 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./src", // Ensures absolute imports from "src" directory
+    "baseUrl": "./src",  // This will make imports start from "src"
     "paths": {
-      "*": ["./*"]
+      "@config/*": ["app/config/*"], // Ensures imports from @config resolve to "app/config"
+      "@api/*": ["app/api/*"],       // Ensures imports from @api resolve to "app/api"
+      "@/*": ["*"]                   // Allows for other imports directly from "src"
     }
   },
-  "include": ["src"]
+  "include": ["src", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
