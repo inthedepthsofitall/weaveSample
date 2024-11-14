@@ -1,44 +1,40 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-type RealEstate = {
-  price: number;
-  zip_code: string;
-  bedrooms: number;
-};
+export default function Page() {
+  const [zipCode, setZipCode] = useState('');
+  const [averagePrice, setAveragePrice] = useState<number | null>(null);
 
-const Home = () => {
-  const [realEstateData, setRealEstateData] = useState<RealEstate[]>([]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setZipCode(e.target.value);
+  };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/weaviateData');
-        const data = await response.json();
-        setRealEstateData(data.objects || []);
-      } catch (error) {
-        console.error('Failed to fetch real estate data:', error);
-      }
-    };
+  const handleSubmit = async () => {
+    if (!zipCode) return;
 
-    fetchData();
-  }, []);
+    try {
+      const response = await fetch(`/api/getAveragePrice?zip=${zipCode}`);
+      const data = await response.json();
+      setAveragePrice(data.averagePrice);
+    } catch (error) {
+      console.error('Error fetching average price:', error);
+    }
+  };
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-4">Real Estate Listings</h1>
-      <div className="grid grid-cols-1 gap-4">
-        {realEstateData.map((item, index) => (
-          <div key={index} className="p-4 border rounded shadow">
-            <p>Price: ${item.price}</p>
-            <p>Zip Code: {item.zip_code}</p>
-            <p>Bedrooms: {item.bedrooms}</p>
-          </div>
-        ))}
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <h1>Find Average Real Estate Price</h1>
+      <input
+        type="text"
+        value={zipCode}
+        onChange={handleInputChange}
+        placeholder="Enter Zip Code"
+      />
+      <button onClick={handleSubmit}>Get Average Price</button>
+      {averagePrice !== null && (
+        <p>Average Price in {zipCode}: ${averagePrice.toLocaleString()}</p>
+      )}
     </div>
   );
-};
-
-export default Home;
+}
